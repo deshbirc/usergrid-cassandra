@@ -12,9 +12,9 @@ WORKDIR /root
 # add datastax repository and install cassandra
 RUN echo "deb http://www.apache.org/dist/cassandra/debian 22x main" | tee -a /etc/apt/sources.list.d/cassandra.sources.list
 RUN gpg --keyserver pgp.mit.edu --recv-keys 749D6EEC0353B12C
-RUN gpg --export --armor 749D6EEC0353B12C | sudo apt-key add -
+RUN gpg --export --armor 749D6EEC0353B12C | apt-key add -
 RUN apt-get update
-RUN sudo apt-get install -yq cassandra
+RUN apt-get install -yq cassandra
 RUN rm -rf /var/lib/apt/lists/*
 
 # persist database and logs between container starts
