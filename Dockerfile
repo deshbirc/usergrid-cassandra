@@ -13,7 +13,7 @@ WORKDIR /root
 RUN \
     echo "deb http://www.apache.org/dist/cassandra/debian 22x main" | tee -a /etc/apt/sources.list.d/cassandra.sources.list && \
     gpg --keyserver pgp.mit.edu --recv-keys A278B781FE4B2BDA && \
-    gpg --export --armor 749D6EEC0353B12C | apt-key add -  && \
+    gpg --export --armor A278B781FE4B2BDA | apt-key add -  && \
     apt-get update && \
     apt-get install -yq cassandra && \
     rm -rf /var/lib/apt/lists/* 
