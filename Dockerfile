@@ -1,24 +1,21 @@
-
 #
 # Cassandra Dockerfile for Usergrid
 #
 # https://github.com/yep/usergrid-cassandra
 # 
 
-FROM yep1/usergrid-java
+FROM deshbir/usergrid-java
 
 ENV DEBIAN_FRONTEND noninteractive
-ENV CASSANDRA_VERSION 2.1.12
 WORKDIR /root
 
 # add datastax repository and install cassandra
-RUN \
-  echo "deb http://debian.datastax.com/community stable main" | tee -a /etc/apt/sources.list.d/cassandra.sources.list && \
-  curl https://debian.datastax.com/debian/repo_key | apt-key add -  && \
-  apt-get update && \
-  apt-get update -o Dir::Etc::sourcelist="sources.list.d/cassandra.sources.list" -o Dir::Etc::sourceparts="-" -o APT::Get::List-Cleanup="0" && \
-  apt-get install -yq cassandra=${CASSANDRA_VERSION} net-tools && \
-  rm -rf /var/lib/apt/lists/*
+RUN echo "deb http://www.apache.org/dist/cassandra/debian 22x main" | tee -a /etc/apt/sources.list.d/cassandra.sources.list
+RUN gpg --keyserver pgp.mit.edu --recv-keys 749D6EEC0353B12C
+RUN gpg --export --armor 749D6EEC0353B12C | sudo apt-key add -
+RUN apt-get update
+RUN sudo apt-get install -yq cassandra
+RUN rm -rf /var/lib/apt/lists/*
 
 # persist database and logs between container starts
 VOLUME ["/var/lib/cassandra", "/var/log/cassandra"]
