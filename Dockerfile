@@ -7,18 +7,15 @@
 FROM deshbir/usergrid-java
 
 ENV DEBIAN_FRONTEND noninteractive
-ENV CASSANDRA_VERSION 2.1.12
 WORKDIR /root
 
 # add datastax repository and install cassandra
 RUN \
-  wget http://launchpadlibrarian.net/109052632/python-support_1.0.15_all.deb && \
-  dpkg -i python-support_1.0.15_all.deb && \
-  echo "deb http://debian.datastax.com/community stable main" | tee -a /etc/apt/sources.list.d/cassandra.sources.list && \
-  curl https://debian.datastax.com/debian/repo_key | apt-key add -  && \
+  echo "deb http://www.apache.org/dist/cassandra/debian 22x main" | tee -a /etc/apt/sources.list.d/cassandra.sources.list && \
+  curl https://www.apache.org/dist/cassandra/KEYS | sudo apt-key add - && \
+  apt-key adv --keyserver pool.sks-keyservers.net --recv-key A278B781FE4B2BDA && \
   apt-get update && \
-  apt-get update -o Dir::Etc::sourcelist="sources.list.d/cassandra.sources.list" -o Dir::Etc::sourceparts="-" -o APT::Get::List-Cleanup="0" && \
-  apt-get install -yq cassandra=${CASSANDRA_VERSION} net-tools && \
+  sudo apt-get install -yq cassandra  && \ 
   rm -rf /var/lib/apt/lists/*
 
 # persist database and logs between container starts
