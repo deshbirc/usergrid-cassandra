@@ -12,6 +12,8 @@ WORKDIR /root
 
 # add datastax repository and install cassandra
 RUN \
+  wget http://launchpadlibrarian.net/109052632/python-support_1.0.15_all.deb && \
+  sudo dpkg -i python-support_1.0.15_all.deb && \
   echo "deb http://debian.datastax.com/community stable main" | tee -a /etc/apt/sources.list.d/cassandra.sources.list && \
   curl https://debian.datastax.com/debian/repo_key | apt-key add -  && \
   apt-get update && \
